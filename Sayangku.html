@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kamu Sayang Aku Nggak?</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Comic Neue', cursive, sans-serif;
+    background: linear-gradient(135deg, #ffe6f0 0%, #fff0f5 100%);
+    color: #ff4d6d;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    overflow: hidden;
+    padding-top: 50px;
+    touch-action: manipulation;
+  }
+
+  h1 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 3px rgba(255, 105, 180, 0.3);
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    min-width: 130px;
+    margin: 12px;
+    box-shadow: 0 6px 10px rgba(0,0,0,0.2);
+    transition: transform 0.15s, background 0.3s;
+  }
+
+  button:active {
+    transform: scale(0.92);
+  }
+
+  #yesBtn {
+    background: #ff6fa5;
+    color: #fff;
+    z-index: 10;
+  }
+
+  #yesBtn:hover {
+    background: #ff4d88;
+  }
+
+  #noBtn {
+    background: #fff6f8;
+    color: #ff6fa5;
+    font-weight: bold;
+    position: fixed;
+    left: 50%;
+    top: 60%;
+    transform: translateX(-50%);
+    z-index: 20;
+  }
+
+  #message {
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ff3366;
+    white-space: pre-line;
+  }
+
+  /* Hati yang jatuh */
+  .heart {
+    position: fixed;
+    top: -30px;
+    font-size: 24px;
+    animation: fall linear forwards;
+    opacity: 0.9;
+    pointer-events: none;
+  }
+
+  @keyframes fall {
+    to {
+      transform: translateY(110vh);
+      opacity: 0;
+    }
+  }
+
+  /* Responsif untuk layar kecil */
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    button {
+      font-size: 0.95rem;
+      padding: 12px 20px;
+      min-width: 110px;
+    }
+
+    #message {
+      font-size: 1rem;
+    }
+  }
+</style>
+</head>
+
+<body>
+  <h1>❤️ Kamu sayang aku nggak? ❤️</h1>
+  <button id="yesBtn">Ya 💞</button>
+  <button id="noBtn">Tidak 😝</button>
+  <div id="message"></div>
+
+<script>
+  const yesBtn = document.getElementById('yesBtn');
+  const noBtn = document.getElementById('noBtn');
+  const message = document.getElementById('message');
+
+  function moveNoButton() {
+    const margin = 40;
+    const bw = noBtn.offsetWidth;
+    const bh = noBtn.offsetHeight;
+    const maxX = window.innerWidth - bw - margin;
+    const maxY = window.innerHeight - bh - margin;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noBtn.style.left = x + 'px';
+    noBtn.style.top  = y + 'px';
+    noBtn.style.transform = 'rotate(' + (Math.random()*30-15) + 'deg)';
+  }
+
+  // Hati jatuh
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.textContent = '❤️';
+
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+    heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+  }
+
+  // klik Ya
+  yesBtn.addEventListener('click', () => {
+    message.textContent = "Aku juga sayang kamu ❤️\nSemoga kita saling setia dan saling menjaga 🥹";
+    for (let i=0; i<20; i++) {
+      setTimeout(createHeart, i * 200);
+    }
+  });
+
+  // tombol Tidak kabur
+  const escapeHandler = (e) => {
+    e.preventDefault();
+    moveNoButton();
+  };
+
+  noBtn.addEventListener('click', escapeHandler);
+  noBtn.addEventListener('touchstart', escapeHandler, {passive:false});
+  noBtn.addEventListener('mouseenter', moveNoButton);
+
+  window.addEventListener('resize', moveNoButton);
+  window.addEventListener('orientationchange', () => setTimeout(moveNoButton, 200));
+
+  window.addEventListener('load', moveNoButton);
+</script>
+</body>
+</html>
